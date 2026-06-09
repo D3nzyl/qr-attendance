@@ -10,20 +10,14 @@ export const createAppAuthClient = (props?: AuthClientOptions) =>
   createBetterAuthClient({
     baseURL: props?.baseURL,
     plugins: [solutionUserAuthClientPlugin()],
-    fetchOptions: {
-      baseURL: props?.baseURL,
-      headers: {
-        "access-control-allow-credentials": "true",
-      },
-      credentials: "include",
-    },
   });
 
 export type AppAuthClient = ReturnType<typeof createAppAuthClient>;
 export type AppSession = AppAuthClient["$Infer"]["Session"];
 
 export const authClient: AppAuthClient = createAppAuthClient({
-  baseURL: "http://localhost:4000",
+  // Same origin as base-web so auth hits /api/auth and cookies are sent without CORS.
+  baseURL: typeof window !== "undefined" ? window.location.origin : undefined,
 });
 
 export type AuthSession =

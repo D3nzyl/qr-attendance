@@ -11,10 +11,10 @@ const TABS = [
 export default function App() {
   const [tab, setTab] = useState("toolbox");
 
-  useEffect(async () => {
+  const getSessionData = async () => {
     const data = await authClient.solution.getSession();
     console.log(data);
-  }, []);
+  };
 
   return (
     <div className="app">
@@ -32,6 +32,7 @@ export default function App() {
               </button>
             ))}
           </nav>
+          <button onClick={getSessionData}>Get Session Data</button>
         </div>
       </header>
       <main className="app-main">

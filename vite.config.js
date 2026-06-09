@@ -11,7 +11,7 @@ export default defineConfig({
     strictPort: true, // Crucial so Vite doesn't switch ports on you
 
     // Kept for injecting correct script paths into Next.js pages
-    origin: process.env.QR_ATTENDANCE_PUBLIC_ORIGIN ?? "http://localhost:3001",
+    origin: process.env.QR_ATTENDANCE_PUBLIC_ORIGIN ?? "http://localhost:3002",
 
     hmr: {
       protocol: "ws",
