@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    ports:
+      - "4001:3001"
+    environment:
+      - PORT=3001
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+    restart: unless-stopped
