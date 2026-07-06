@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --port 5299",
-    "server": "node server/index.js",
+    "server": "tsx server/index.ts",
+    "server:watch": "tsx watch server/index.ts",
     "build": "next build",
     "start": "next start --port 5299",
-    "preview": "next start --port 5299"
+    "preview": "next start --port 5299",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p server/tsconfig.json"
   },
   "dependencies": {
+    "@allocatespace/as2-platform-sdk": "link:/Users/edwinlee/Documents/Projects/allocate-platform-monorepo/packages/sdk/as2-platform-sdk",
     "better-sqlite3": "^12.10.0",
     "browser-image-compression": "^2.0.2",
     "cors": "^2.8.6",
@@ -21,6 +24,24 @@
     "next": "^14.2.15",
     "qrcode": "^1.5.3",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "tsx": "^4.23.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.2.0",
+    "@types/node": "^26.1.0",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "typescript": "^6.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild"
+    ]
   }
 }

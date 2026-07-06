@@ -16,4 +16,4 @@ COPY server/ ./server/
 COPY --from=builder /app/dist ./dist
 RUN mkdir -p data uploads
 EXPOSE 3001
-CMD ["node", "server/index.js"]
+CMD ["npx", "tsx", "server/index.ts"]
