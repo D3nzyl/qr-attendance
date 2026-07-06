@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useCallback, useRef, useEffect } from 'react';
 import QRScanner from '../components/QRScanner.jsx';
 import AttendanceTable from '../components/AttendanceTable.jsx';
@@ -15,6 +17,7 @@ export default function ScanPage() {
   const [records, setRecords] = useState([]);
   const [signatures, setSignatures] = useState({});
   const [location, setLocation] = useState('');
+  const [callbackUrl, setCallbackUrl] = useState('');
   const [toast, setToast] = useState(null);
   const toastTimerRef = useRef(null);
   const handlerRef = useRef(null);
@@ -74,9 +77,6 @@ export default function ScanPage() {
   };
 
   const handleSubmit = () => {
-    const params = new URLSearchParams(window.location.search);
-    const callbackUrl = params.get('callbackUrl') || params.get('callback');
-
     if (!callbackUrl) {
       window.alert(
         'No callback URL found.\n\nAdd ?callbackUrl=YOUR_APP_URL to the address bar to enable submit.',
@@ -97,8 +97,10 @@ export default function ScanPage() {
     window.location.href = returnUrl.toString();
   };
 
-  const params = new URLSearchParams(window.location.search);
-  const callbackUrl = params.get('callbackUrl') || params.get('callback');
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setCallbackUrl(params.get('callbackUrl') || params.get('callback') || '');
+  }, []);
 
   useEffect(() => () => clearTimeout(toastTimerRef.current), []);
 
