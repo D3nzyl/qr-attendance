@@ -1,6 +1,6 @@
 # QR Attendance
 
-A lightweight attendance tracker that uses QR codes. Workers scan a QR code on their phone; the app records the scan against a contract, team, and workday. Built with React + Vite on the frontend and an Express + SQLite backend.
+A lightweight attendance tracker that uses QR codes. Workers scan a QR code on their phone; the app records the scan against a contract, team, and workday. Built with Next.js (App Router) + React + TypeScript on the frontend and an Express + SQLite backend.
 
 ## Features
 
@@ -14,16 +14,23 @@ A lightweight attendance tracker that uses QR codes. Workers scan a QR code on t
 
 ```
 .
+├── app/                    # Next.js App Router frontend
+│   ├── layout.tsx          # Root layout
+│   ├── page.tsx            # Home (Toolbox + Generate tabs)
+│   ├── globals.css         # App styles
+│   ├── scan/page.tsx       # QR scan page            (/scan)
+│   ├── components/         # React components (+ page-level views)
+│   ├── lib/api.ts          # Frontend API client
+│   └── types.ts            # Shared TypeScript types
 ├── server/
-│   ├── index.js        # Express entry point
-│   ├── db.js           # SQLite setup (better-sqlite3)
+│   ├── index.ts            # Express entry point
+│   ├── db.ts               # SQLite setup (better-sqlite3)
 │   └── routes/
-│       ├── data.js     # Attendance CRUD routes  (/api/*)
-│       └── upload.js   # Image upload route       (/api/images)
-├── src/                # React + Vite frontend
-├── data/               # SQLite database files (auto-created)
-├── uploads/            # Uploaded images        (auto-created)
-├── dist/               # Vite production build  (auto-created)
+│       ├── data.ts         # Attendance CRUD routes  (/api/*)
+│       └── upload.ts       # Image upload route       (/api/images)
+├── data/                   # SQLite database files (auto-created)
+├── uploads/                # Uploaded images        (auto-created)
+├── next.config.ts
 ├── Dockerfile
 └── docker-compose.yml
 ```

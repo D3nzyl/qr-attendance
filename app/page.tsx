@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from 'react';
-import GeneratePage from '../src/pages/GeneratePage';
-import ToolboxPage from '../src/pages/ToolboxPage';
+import { useState } from "react";
+import GeneratePage from "./_components/GeneratePage";
+import ToolboxPage from "./_components/ToolboxPage";
 
 const TABS = [
-  { id: 'toolbox', label: 'Toolbox Meeting' },
-  { id: 'generate', label: 'Generate QR' },
+  { id: "toolbox", label: "Toolbox Meeting" },
+  { id: "generate", label: "Generate QR" },
 ];
 
 export default function HomePage() {
-  const [tab, setTab] = useState('toolbox');
+  const [tab, setTab] = useState("toolbox");
 
   return (
     <div className="app">
@@ -21,7 +21,7 @@ export default function HomePage() {
             {TABS.map((t) => (
               <button
                 key={t.id}
-                className={`tab-btn${tab === t.id ? ' active' : ''}`}
+                className={`tab-btn${tab === t.id ? " active" : ""}`}
                 onClick={() => setTab(t.id)}
               >
                 {t.label}
@@ -31,8 +31,8 @@ export default function HomePage() {
         </div>
       </header>
       <main className="app-main">
-        {tab === 'toolbox' && <ToolboxPage />}
-        {tab === 'generate' && <GeneratePage />}
+        {tab === "toolbox" && <ToolboxPage />}
+        {tab === "generate" && <GeneratePage />}
       </main>
     </div>
   );

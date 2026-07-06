@@ -1,0 +1,40 @@
+// Prisma schema for the QR attendance app (MongoDB).
+// Regenerate the client after edits: `pnpm prisma generate`.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+/// One toolbox-meeting day. `data` holds the DayData payload as JSON.
+model Day {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  contract  String
+  teamNo    String   @map("team_no")
+  weekKey   String   @map("week_key")
+  day       String
+  company   String   @default("")
+  data      Json     @default("{}")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([contract, teamNo, weekKey, day])
+  @@map("days")
+}
+
+/// An uploaded image reference for a given day.
+model Image {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  contract     String
+  teamNo       String   @map("team_no")
+  weekKey      String   @map("week_key")
+  day          String
+  filename     String
+  originalName String   @default("") @map("original_name")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("images")
+}

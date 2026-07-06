@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
-import QRScanner from '../components/QRScanner';
-import AttendanceTable from '../components/AttendanceTable';
+import QRScanner from './QRScanner';
+import AttendanceTable from './AttendanceTable';
 import type { AttendanceRecord, Toast, ToastType } from '../types';
 
 const LOCATIONS = [

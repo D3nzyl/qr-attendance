@@ -1,19 +1,31 @@
-import { useState, useEffect, useCallback } from 'react';
-import DayForm from '../components/DayForm';
-import WeeklyReport from '../components/WeeklyReport';
-import { api } from '../lib/api';
-import type { WeekData, DayData } from '../types';
+import { useState, useEffect, useCallback } from "react";
+import DayForm from "./DayForm";
+import WeeklyReport from "./WeeklyReport";
+import { api } from "../_lib/api";
+import type { WeekData, DayData } from "../types";
 
-const DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-const COMPANIES = ['GIM TIAN CIVIL ENGINEERING PTE LTD', 'Other'];
-const TEAMS = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
+const DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+const COMPANIES = ["GIM TIAN CIVIL ENGINEERING PTE LTD", "Other"];
+const TEAMS = ["T1", "T2", "T3", "T4", "T5", "T6"];
 const CONTRACTS = [
-  'DE170', 'J102', 'J120', 'N111',
-  'RM103A', 'RM103B', 'RM203', 'RM209A',
-  'TR307', 'TR372', 'TR372-DRC', 'TR376',
-  'Store', 'Others',
-  'RM203 Workshop', 'TR372 Workshop', 'RM209 Workshop',
-  'Jln Leban',
+  "DE170",
+  "J102",
+  "J120",
+  "N111",
+  "RM103A",
+  "RM103B",
+  "RM203",
+  "RM209A",
+  "TR307",
+  "TR372",
+  "TR372-DRC",
+  "TR376",
+  "Store",
+  "Others",
+  "RM203 Workshop",
+  "TR372 Workshop",
+  "RM209 Workshop",
+  "Jln Leban",
 ];
 
 function getMondayOf(date: Date | number | string): Date {
@@ -38,15 +50,15 @@ export default function ToolboxPage() {
   const [monday, setMonday] = useState<Date>(() => getMondayOf(new Date()));
   const [activeDay, setActiveDay] = useState<string | null>(null);
   const [showReport, setShowReport] = useState(false);
-  const [company, setCompany] = useState('GIM TIAN CIVIL ENGINEERING PTE LTD');
-  const [contract, setContract] = useState('');
-  const [teamNo, setTeamNo] = useState('');
+  const [company, setCompany] = useState("GIM TIAN CIVIL ENGINEERING PTE LTD");
+  const [contract, setContract] = useState("");
+  const [teamNo, setTeamNo] = useState("");
 
   const [weekData, setWeekData] = useState<WeekData>({ days: {} });
   const [loading, setLoading] = useState(false);
 
   const wk = weekKey(monday);
-  const canShowDays = contract !== '' && teamNo !== '';
+  const canShowDays = contract !== "" && teamNo !== "";
 
   const fetchWeek = useCallback(async () => {
     if (!canShowDays) return;
@@ -56,14 +68,16 @@ export default function ToolboxPage() {
       setWeekData(data);
       if (data.company) setCompany(data.company);
     } catch (e) {
-      console.error('Failed to load week:', e);
+      console.error("Failed to load week:", e);
       setWeekData({ days: {} });
     } finally {
       setLoading(false);
     }
   }, [contract, teamNo, wk, canShowDays]);
 
-  useEffect(() => { fetchWeek(); }, [fetchWeek]);
+  useEffect(() => {
+    fetchWeek();
+  }, [fetchWeek]);
 
   const saveDay = async (day: string, dayData: DayData) => {
     await api.saveDay(contract, teamNo, wk, day, company, dayData);
@@ -85,16 +99,27 @@ export default function ToolboxPage() {
 
   const handleDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const d = new Date(e.target.value);
-    if (!isNaN(d.getTime())) { setMonday(getMondayOf(d)); setActiveDay(null); setShowReport(false); }
+    if (!isNaN(d.getTime())) {
+      setMonday(getMondayOf(d));
+      setActiveDay(null);
+      setShowReport(false);
+    }
   };
 
-  const mondayStr = monday.toLocaleDateString('en-SG', { day: '2-digit', month: 'short', year: '2-digit' });
+  const mondayStr = monday.toLocaleDateString("en-SG", {
+    day: "2-digit",
+    month: "short",
+    year: "2-digit",
+  });
   const sunDate = dayDate(monday, 6);
-  const sundayStr = sunDate.toLocaleDateString('en-SG', { day: '2-digit', month: 'short', year: '2-digit' });
+  const sundayStr = sunDate.toLocaleDateString("en-SG", {
+    day: "2-digit",
+    month: "short",
+    year: "2-digit",
+  });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       {/* ── Header card ── */}
       <div className="card">
         <div className="card-body">
@@ -103,28 +128,51 @@ export default function ToolboxPage() {
           <div className="toolbox-header-fields">
             <div className="form-group toolbox-company-field">
               <label>Company</label>
-              <select value={company} onChange={e => setCompany(e.target.value)}>
-                {COMPANIES.map(c => <option key={c} value={c}>{c}</option>)}
+              <select
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+              >
+                {COMPANIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="form-group">
               <label>Contract / Project</label>
               <select
                 value={contract}
-                onChange={e => { setContract(e.target.value); setActiveDay(null); setShowReport(false); }}
+                onChange={(e) => {
+                  setContract(e.target.value);
+                  setActiveDay(null);
+                  setShowReport(false);
+                }}
               >
                 <option value="">— Select contract —</option>
-                {CONTRACTS.map(c => <option key={c} value={c}>{c}</option>)}
+                {CONTRACTS.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="form-group">
               <label>Team No.</label>
               <select
                 value={teamNo}
-                onChange={e => { setTeamNo(e.target.value); setActiveDay(null); setShowReport(false); }}
+                onChange={(e) => {
+                  setTeamNo(e.target.value);
+                  setActiveDay(null);
+                  setShowReport(false);
+                }}
               >
                 <option value="">— Select team —</option>
-                {TEAMS.map(t => <option key={t} value={t}>{t}</option>)}
+                {TEAMS.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -133,7 +181,8 @@ export default function ToolboxPage() {
 
       {!canShowDays && (
         <div className="banner banner-warning">
-          Select a <strong>Contract</strong> and <strong>Team</strong> above to start recording attendance.
+          Select a <strong>Contract</strong> and <strong>Team</strong> above to
+          start recording attendance.
         </div>
       )}
 
@@ -146,7 +195,12 @@ export default function ToolboxPage() {
                 <div className="form-group">
                   <label>Week</label>
                   <div className="week-nav-row">
-                    <button className="week-nav-arrow" onClick={() => shiftWeek(-1)}>&#8249;</button>
+                    <button
+                      className="week-nav-arrow"
+                      onClick={() => shiftWeek(-1)}
+                    >
+                      &#8249;
+                    </button>
                     <input
                       type="date"
                       value={monday.toISOString().slice(0, 10)}
@@ -154,16 +208,26 @@ export default function ToolboxPage() {
                       className="week-date-input"
                       title="Pick any date — jumps to that week"
                     />
-                    <button className="week-nav-arrow" onClick={() => shiftWeek(1)}>&#8250;</button>
+                    <button
+                      className="week-nav-arrow"
+                      onClick={() => shiftWeek(1)}
+                    >
+                      &#8250;
+                    </button>
                   </div>
-                  <span className="week-range-label">{mondayStr} — {sundayStr}</span>
+                  <span className="week-range-label">
+                    {mondayStr} — {sundayStr}
+                  </span>
                 </div>
                 <button
-                  className={`btn ${showReport ? 'btn-primary' : 'btn-ghost'}`}
-                  style={{ width: '100%', marginTop: 8, fontSize: 15 }}
-                  onClick={() => { setShowReport(v => !v); setActiveDay(null); }}
+                  className={`btn ${showReport ? "btn-primary" : "btn-ghost"}`}
+                  style={{ width: "100%", marginTop: 8, fontSize: 15 }}
+                  onClick={() => {
+                    setShowReport((v) => !v);
+                    setActiveDay(null);
+                  }}
                 >
-                  {showReport ? 'Hide Weekly Report' : 'View Weekly Report'}
+                  {showReport ? "Hide Weekly Report" : "View Weekly Report"}
                 </button>
               </div>
             </div>
@@ -175,26 +239,33 @@ export default function ToolboxPage() {
                   const d = dayDate(monday, i);
                   const isFilled = !!weekData.days?.[day];
                   const isActive = activeDay === day;
-                  const isToday = d.toDateString() === new Date().toDateString();
+                  const isToday =
+                    d.toDateString() === new Date().toDateString();
                   return (
                     <button
                       key={day}
-                      className={`day-tab${isActive ? ' active' : ''}${isFilled ? ' filled' : ''}${isToday ? ' today' : ''}`}
+                      className={`day-tab${isActive ? " active" : ""}${isFilled ? " filled" : ""}${isToday ? " today" : ""}`}
                       onClick={() => {
                         setActiveDay(isActive ? null : day);
                         setShowReport(false);
                       }}
                     >
                       <span className="day-tab-label">{day}</span>
-                      <span className="day-tab-num">{d.getDate()}/{d.getMonth() + 1}</span>
+                      <span className="day-tab-num">
+                        {d.getDate()}/{d.getMonth() + 1}
+                      </span>
                       {isFilled && <span className="day-filled-dot" />}
-                      {isToday && !isFilled && <span className="day-today-dot" />}
+                      {isToday && !isFilled && (
+                        <span className="day-today-dot" />
+                      )}
                     </button>
                   );
                 })}
               </div>
               <div className="day-tabs-hint">
-                {loading ? 'Loading…' : `${contract} · ${teamNo} — click a day to fill in details`}
+                {loading
+                  ? "Loading…"
+                  : `${contract} · ${teamNo} — click a day to fill in details`}
               </div>
             </div>
           </div>
