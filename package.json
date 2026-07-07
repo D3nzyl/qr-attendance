@@ -9,9 +9,11 @@
     "postinstall": "prisma generate",
     "start": "next start --port 5299",
     "preview": "next start --port 5299",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "cleandep": "rimraf node_modules && pnpm cache delete && pnpm install"
   },
   "dependencies": {
+    "@allocatespace/as2-platform-sdk": "file:/Users/edwinlee/Documents/Projects/allocate-platform-monorepo/packages/sdk/as2-platform-sdk/allocatespace-as2-platform-sdk-0.0.1.tgz",
     "@prisma/client": "^6.19.3",
     "browser-image-compression": "^2.0.2",
     "html5-qrcode": "^2.3.8",
@@ -26,6 +28,7 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "prisma": "^6.19.3",
+    "rimraf": "^6.1.3",
     "typescript": "^6.0.3"
   },
   "pnpm": {

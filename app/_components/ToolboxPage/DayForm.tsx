@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import imageCompression from "browser-image-compression";
-import QRScanner from "./QRScanner";
-import ImageLightbox from "./ImageLightbox";
-import { api } from "../_lib/api";
-import type { DayData, Employee, ImageRef } from "../types";
+import QRScanner from "../QRScanner";
+import ImageLightbox from "../ImageLightbox";
+import { api } from "../../_lib/api";
+import type { DayData, Employee, ImageRef } from "../../types";
 
 async function reverseGeocode(lat: number, lon: number): Promise<string> {
   const res = await fetch(

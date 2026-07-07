@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import ImageLightbox from './ImageLightbox';
-import type { WeekData, Employee, ImageRef } from '../types';
+import ImageLightbox from '../ImageLightbox';
+import type { WeekData, Employee, ImageRef } from '../../types';
 
 const DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
