@@ -13,7 +13,7 @@
     "cleandep": "rimraf node_modules && pnpm cache delete && pnpm install"
   },
   "dependencies": {
-    "@allocatespace/as2-platform-sdk": "file:/Users/edwinlee/Documents/Projects/allocate-platform-monorepo/packages/sdk/as2-platform-sdk/allocatespace-as2-platform-sdk-0.0.1.tgz",
+    "@allocatespace/as2-platform-sdk": "link:../allocate-platform-monorepo/packages/sdk/as2-platform-sdk",
     "@prisma/client": "^6.19.3",
     "browser-image-compression": "^2.0.2",
     "html5-qrcode": "^2.3.8",
