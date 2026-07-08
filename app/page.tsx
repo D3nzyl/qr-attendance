@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GeneratePage from "./_components/GeneratePage";
 import ToolboxPage from "./_components/ToolboxPage";
+import { as2Client } from "./_lib/as2-client";
 
 const TABS = [
   { id: "toolbox", label: "Toolbox Meeting" },
@@ -11,6 +12,11 @@ const TABS = [
 
 export default function HomePage() {
   const [tab, setTab] = useState("toolbox");
+
+  useEffect(() => {
+    // Initialize the AS2 development user session
+    as2Client.initDevSession();
+  }, []);
 
   return (
     <div className="app">

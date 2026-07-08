@@ -3,6 +3,13 @@ import type { NextConfig } from "next";
 import path from "node:path";
 
 const nextConfig: NextConfig = {
+  env: {
+    AS2_DEV_GATEWAY_URL: process.env.AS2_DEV_GATEWAY_URL,
+    AS2_DEV_LOGIN_EMAIL: process.env.AS2_DEV_LOGIN_EMAIL,
+    AS2_DEV_LOGIN_PASSWORD: process.env.AS2_DEV_LOGIN_PASSWORD,
+    AS2_DEV_WORKSPACE_ID: process.env.AS2_DEV_WORKSPACE_ID,
+    AS2_DEV_SOLUTION_ID: process.env.AS2_DEV_SOLUTION_ID,
+  },
   reactStrictMode: true,
   // Allow symlinking to the SDK package from the parent directory.
   turbopack: {
@@ -12,10 +19,8 @@ const nextConfig: NextConfig = {
   experimental: {
     externalDir: true,
   },
-  async rewrites() {
-    // This for local development only to test the AS2.0 SDK API.
-    // Can change to platform.dev.allo8.com if not hosting locally.
-    return createNextDevRewrites("http://localhost:3002");
+  rewrites: async () => {
+    return createNextDevRewrites();
   },
 };
 
