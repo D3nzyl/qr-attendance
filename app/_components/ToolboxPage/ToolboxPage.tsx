@@ -77,7 +77,7 @@ export default function ToolboxPage() {
   // Load contract/team options for the linked solution.
   useEffect(() => {
     let cancelled = false;
-    // setOptionsLoading(true);
+    setOptionsLoading(true);
     fetchToolboxOptions()
       .then((opts) => {
         if (cancelled) return;
