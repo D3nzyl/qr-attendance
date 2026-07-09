@@ -3,6 +3,7 @@ import {
   GetObjectCommand,
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import { extname } from "path";
@@ -20,6 +21,8 @@ const MAX_SIZE = 25 * 1024 * 1024;
 // Uploads above this get server-side compressed (safety net for images that
 // skipped or outran client-side compression). Roughly matches the client's ~1MB target.
 const COMPRESS_ABOVE = 1 * 1024 * 1024;
+// How long a presigned read URL stays valid.
+const SIGNED_URL_TTL = 60 * 60; // 1 hour
 
 type Params = { params: Promise<{ slug?: string[] }> };
 
@@ -84,8 +87,9 @@ export async function POST(req: Request, { params }: Params) {
   });
 }
 
-// GET /api/images/file/:key — stream a private S3 object back to the browser.
-// The key may span multiple path segments (workspaceId/solutionId/name).
+// GET /api/images/file/:key — redirect to a short-lived presigned S3 URL so the
+// browser fetches the (private) object directly. The key may span multiple path
+// segments (workspaceId/solutionId/name).
 export async function GET(_req: Request, { params }: Params) {
   const { slug = [] } = await params;
   if (slug.length < 2 || slug[0] !== "file") {
@@ -94,24 +98,17 @@ export async function GET(_req: Request, { params }: Params) {
   const key = slug.slice(1).join("/");
 
   try {
-    const obj = await s3.send(
+    const signedUrl = await getSignedUrl(
+      s3,
       new GetObjectCommand({ Bucket: S3_BUCKET, Key: key }),
+      { expiresIn: SIGNED_URL_TTL },
     );
-    const bytes = await obj.Body?.transformToByteArray();
-    if (!bytes)
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
-
-    const contentType = obj.ContentType ?? "application/octet-stream";
-    // Copy into a fresh ArrayBuffer-backed view so the type satisfies BlobPart.
-    return new NextResponse(
-      new Blob([new Uint8Array(bytes)], { type: contentType }),
-      {
-        headers: {
-          "Content-Type": contentType,
-          "Cache-Control": "public, max-age=31536000, immutable",
-        },
-      },
-    );
+    // Cache the redirect a bit below the signing TTL so a cached 307 can never
+    // outlive the URL it points at.
+    return NextResponse.redirect(signedUrl, {
+      status: 307,
+      headers: { "Cache-Control": `private, max-age=${SIGNED_URL_TTL - 300}` },
+    });
   } catch {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }

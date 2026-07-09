@@ -15,6 +15,7 @@
   "dependencies": {
     "@allocatespace/as2-platform-sdk": "link:../allocate-platform-monorepo/packages/sdk/as2-platform-sdk",
     "@aws-sdk/client-s3": "^3.1083.0",
+    "@aws-sdk/s3-request-presigner": "^3.1083.0",
     "@prisma/client": "^6.19.3",
     "browser-image-compression": "^2.0.2",
     "html5-qrcode": "^2.3.8",
