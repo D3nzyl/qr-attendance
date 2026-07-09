@@ -12,14 +12,18 @@ datasource db {
 
 /// One toolbox-meeting day. `data` holds the DayData payload as JSON.
 model Day {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  contract  String
-  teamNo    String   @map("team_no")
-  weekKey   String   @map("week_key")
-  day       String
-  company   String   @default("")
-  data      Json     @default("{}")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  contract    String   @db.ObjectId
+  teamNo      String   @map("team_no") @db.ObjectId
+  weekKey     String   @map("week_key")
+  day         String
+  company     String   @default("")
+  data        Json     @default("{}")
+  workspaceId String   @db.ObjectId
+  solutionId  String   @db.ObjectId
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  images Image[]
 
   @@unique([contract, teamNo, weekKey, day])
   @@map("days")
@@ -28,13 +32,12 @@ model Day {
 /// An uploaded image reference for a given day.
 model Image {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  contract     String
-  teamNo       String   @map("team_no")
-  weekKey      String   @map("week_key")
-  day          String
+  dayId        String   @db.ObjectId
   filename     String
   originalName String   @default("") @map("original_name")
   createdAt    DateTime @default(now()) @map("created_at")
+
+  day Day @relation(fields: [dayId], references: [id])
 
   @@map("images")
 }

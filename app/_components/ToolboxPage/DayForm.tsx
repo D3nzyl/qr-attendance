@@ -546,12 +546,9 @@ export default function DayForm({
     }
   };
 
-  const removeImage = async (id: string) => {
-    try {
-      await api.deleteImage(id);
-    } catch {
-      /* ignore if already gone */
-    }
+  const removeImage = (id: string) => {
+    // Only drop it locally; the actual S3/DB delete happens when the day is
+    // saved (the day PUT reconciles its images against this list).
     set(
       "images",
       form.images.filter((i) => i.id !== id),

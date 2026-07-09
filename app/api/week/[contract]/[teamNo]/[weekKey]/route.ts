@@ -11,13 +11,26 @@ export async function GET(
   const { contract, teamNo, weekKey } = await params;
   const rows = await db.day.findMany({
     where: { contract, teamNo, weekKey },
-    select: { day: true, company: true, data: true },
+    select: {
+      day: true,
+      company: true,
+      data: true,
+      // Pull each day's images via the relation instead of the JSON blob.
+      images: { select: { id: true, originalName: true, filename: true } },
+    },
   });
 
   const result: { company: string; days: Record<string, unknown> } = { company: '', days: {} };
   for (const row of rows) {
     if (row.company) result.company = row.company;
-    result.days[row.day] = row.data ?? {};
+    const data = (row.data ?? {}) as Record<string, unknown>;
+    // Relation is the source of truth for images; overlay it onto the payload.
+    data.images = row.images.map((img) => ({
+      id: img.id,
+      name: img.originalName,
+      url: `/api/images/file/${img.filename}`,
+    }));
+    result.days[row.day] = data;
   }
   return NextResponse.json(result);
 }
