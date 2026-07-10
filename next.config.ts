@@ -1,6 +1,5 @@
 import { createNextDevRewrites } from "@allocatespace/as2-platform-sdk";
 import type { NextConfig } from "next";
-import path from "node:path";
 
 const nextConfig: NextConfig = {
   env: {
@@ -11,14 +10,6 @@ const nextConfig: NextConfig = {
     AS2_DEV_SOLUTION_ID: process.env.AS2_DEV_SOLUTION_ID,
   },
   reactStrictMode: true,
-  // Allow symlinking to the SDK package from the parent directory.
-  turbopack: {
-    root: path.resolve(import.meta.dirname, ".."),
-  },
-  // Allow compiling modules that live outside the project root.
-  experimental: {
-    externalDir: true,
-  },
   rewrites: async () => {
     return createNextDevRewrites();
   },
