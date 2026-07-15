@@ -4,26 +4,43 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "server": "node server/index.js",
-    "build": "vite build",
-    "start": "node server/index.js",
-    "preview": "vite preview"
+    "dev": "next dev --port 5299",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
+    "start": "next start --port 5299",
+    "preview": "next start --port 5299",
+    "typecheck": "tsc --noEmit",
+    "cleandep": "rimraf node_modules && pnpm cache delete && pnpm install"
   },
   "dependencies": {
-    "better-sqlite3": "^12.10.0",
+    "@allocatespace/as2-platform-sdk": "^0.0.1",
+    "@aws-sdk/client-s3": "^3.1083.0",
+    "@aws-sdk/s3-request-presigner": "^3.1083.0",
+    "@prisma/client": "^6.19.3",
     "browser-image-compression": "^2.0.2",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
     "html5-qrcode": "^2.3.8",
-    "multer": "^2.1.1",
+    "next": "^16.2.10",
     "qrcode": "^1.5.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^5.4.2"
+    "@types/node": "^26.1.0",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "prisma": "^6.19.3",
+    "rimraf": "^6.1.3",
+    "typescript": "^6.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "esbuild",
+      "prisma",
+      "sharp"
+    ]
   }
 }
